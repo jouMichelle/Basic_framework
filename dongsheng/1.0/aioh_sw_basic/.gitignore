@@ -1,0 +1,28 @@
+##ignore this file##
+**/target/
+.classpath
+.settings
+# Created by .ignore support plugin (hsz.mobi)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+*.iml
+**/.idea
+**/target
+**/logs
+**/log
+**/.project
+
+
+
+
+
+
