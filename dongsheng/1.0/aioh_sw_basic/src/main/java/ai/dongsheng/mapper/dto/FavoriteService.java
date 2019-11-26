@@ -1,4 +1,4 @@
-package ai.dongsheng.service;
+package ai.dongsheng.mapper.dto;
 
 import ai.dongsheng.model.entity.Favorite;
 import com.baomidou.mybatisplus.extension.service.IService;

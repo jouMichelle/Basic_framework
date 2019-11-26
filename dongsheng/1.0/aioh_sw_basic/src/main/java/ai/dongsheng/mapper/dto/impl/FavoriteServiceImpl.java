@@ -1,8 +1,8 @@
-package ai.dongsheng.service.impl;
+package ai.dongsheng.mapper.dto.impl;
 
 import ai.dongsheng.model.entity.Favorite;
 import ai.dongsheng.mapper.FavoriteMapper;
-import ai.dongsheng.service.FavoriteService;
+import ai.dongsheng.mapper.dto.FavoriteService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
