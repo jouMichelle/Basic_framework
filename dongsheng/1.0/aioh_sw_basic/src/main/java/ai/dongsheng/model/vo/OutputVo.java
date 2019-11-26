@@ -1,10 +1,9 @@
 package ai.dongsheng.model.vo;
 
 
-import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import ai.dongsheng.common.ErrorCode;
+import ai.dongsheng.utils.GsonUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class OutputVo<T> {
     private String reqId;
@@ -12,16 +11,23 @@ public class OutputVo<T> {
     private int code;
     private int time;
     private T data = null;
-    
+
     public OutputVo() {
     }
 
+    public OutputVo(T data) {
+        this.data = data;
+        this.code =  ErrorCode.OK;
+        this.msg = "SUCCESS";
+        this.setTime((int) (System.currentTimeMillis() / 1000));
+    }
+
     public OutputVo(String reqId) {
-        this(reqId, ErrorCode.OK, "成功!");
+        this(reqId, ErrorCode.OK, "SUCCESS");
     }
 
     public OutputVo(String reqId,T data) {
-        this(reqId, ErrorCode.OK, "成功!",data);
+        this(reqId, ErrorCode.OK, "SUCCESS",data);
     }
     public OutputVo(String reqId, int code, String msg) {
         this.setReqId(reqId);
@@ -105,9 +111,15 @@ public class OutputVo<T> {
         return new OutputVo<>(200, null, data);
     }
 
+    // @Override
+    // public String toString() {
+    //     return JSON.toJSONString(this);
+    // }
+
+
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return GsonUtil.toJson(this, this.getClass());
     }
 
     public String getMsg() {
