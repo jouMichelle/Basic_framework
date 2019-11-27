@@ -18,7 +18,9 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * <p>
@@ -33,7 +35,7 @@ public class CodeGenerator {
     public static final String OUTPUTDIR = "/src/main/java";
     public static final String AUTHOR = "MichelleJou";
     // 数据库连接URL
-    public static final String DBURL = "jdbc:mysql://47.106.230.10/userdata?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Taipei";
+    public static final String DBURL = "jdbc:mysql://47.106.230.10/account?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Taipei";
     // 数据库驱动
     public static final String DBDRIVER = "com.mysql.cj.jdbc.Driver";
     // 数据库用户名
@@ -133,7 +135,7 @@ public class CodeGenerator {
         // 写于父类中的公共字段
         // strategy.setSuperEntityColumns("id");
         // 需要生成的表
-        strategy.setInclude(scanner("表名"));
+        strategy.setInclude(scanner("表名多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
