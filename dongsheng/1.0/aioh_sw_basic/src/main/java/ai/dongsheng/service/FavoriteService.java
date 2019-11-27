@@ -1,4 +1,4 @@
-package ai.dongsheng.mapper.dto;
+package ai.dongsheng.service;
 
 import ai.dongsheng.model.entity.Favorite;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author MichelleJou
- * @since 2019-11-26
+ * @since 2019-11-27
  */
 public interface FavoriteService extends IService<Favorite> {
 

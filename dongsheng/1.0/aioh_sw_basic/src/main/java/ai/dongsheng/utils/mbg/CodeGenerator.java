@@ -1,4 +1,4 @@
-package ai.dongsheng.utils;
+package ai.dongsheng.utils.mbg;
 
 /**
  * @program: aioh_sw_basic
@@ -13,13 +13,12 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * <p>
@@ -49,12 +48,22 @@ public class CodeGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
+        // 文件生成路径
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + OUTPUTDIR);
+        // 作者
         gc.setAuthor(AUTHOR);
         gc.setOpen(false);
         //是否覆盖文件
         gc.setFileOverride(false);
+        // 日期类型的字段使用哪个类型，默认是 java8的 日期类型，此处改为 java.util.date
+        gc.setDateType(DateType.ONLY_DATE);
+        // gc.setSwagger2(true); 实体属性 Swagger2 注解
+        gc.setFileOverride(true); // 如果生成的不好，进行覆盖处理。
+        // gc.setActiveRecord(true);
+        gc.setEnableCache(false);// XML 二级缓存
+        gc.setBaseResultMap(true);// mapper.xml 是否生成 ResultMap，默认 false 不生成
+        gc.setBaseColumnList(true);// mapper.xml 是否生成 ColumnList，默认 false 不生成
         //自定义文件名
         gc.setMapperName("%sMapper");
         gc.setServiceName("%sService");
@@ -76,6 +85,7 @@ public class CodeGenerator {
         pc.setEntity("model.entity");
         pc.setXml("mapper");
         pc.setService("service");
+        pc.setServiceImpl("service.impl");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -91,6 +101,8 @@ public class CodeGenerator {
         // 如果模板引擎是 velocity
         // String templatePath = "/templates/mapper.xml.vm";
 
+
+
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
@@ -98,8 +110,6 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                // return projectPath + "/src/main/resources/ai/dongsheng/mapper" + pc.getModuleName()
-                //         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
                 return projectPath + "/src/main/resources/ai/dongsheng/mapper"
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
@@ -115,18 +125,22 @@ public class CodeGenerator {
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
+        // 表名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("id");
+        // strategy.setSuperEntityColumns("id");
+        // 需要生成的表
         strategy.setInclude(scanner("表名"));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        strategy.setSuperServiceClass(null);
+        strategy.setSuperServiceImplClass(null);
+        strategy.setSuperMapperClass(null);
         mpg.execute();
     }
 

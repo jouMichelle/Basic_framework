@@ -1,6 +1,8 @@
 package ai.dongsheng.model.entity;
 
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.IdType;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +14,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author MichelleJou
- * @since 2019-11-26
+ * @since 2019-11-27
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -20,6 +22,12 @@ import lombok.experimental.Accessors;
 public class Favorite implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 自增id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     /**
      * 用户ID
@@ -79,12 +87,12 @@ public class Favorite implements Serializable {
     /**
      * 修改的时间戳（毫秒）
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
 
 }

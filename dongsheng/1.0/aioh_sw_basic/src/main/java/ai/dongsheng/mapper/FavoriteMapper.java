@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author MichelleJou
- * @since 2019-11-26
+ * @since 2019-11-27
  */
 public interface FavoriteMapper extends BaseMapper<Favorite> {
 
