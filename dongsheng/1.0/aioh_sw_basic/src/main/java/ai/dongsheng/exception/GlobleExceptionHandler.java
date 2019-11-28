@@ -98,7 +98,8 @@ public class GlobleExceptionHandler {
     @ExceptionHandler(value = BaseException.class)
     @ResponseBody
     public OutputVo bizExceptionHandler(HttpServletRequest req, BaseException e) {
-        logger.error("发生业务异常！原因是：{}", e.getMessage());
+        String method = Thread.currentThread().getStackTrace()[2].getMethodName();
+        logger.error("{}   Business exceptions ! Error cause =>> :[{}]", method, e.getMessage());
         return new OutputVo<>(e.getCode(), e.getMessage());
     }
 
