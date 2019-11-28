@@ -33,12 +33,12 @@ import ai.dongsheng.model.vo.OutputVo;
 @Component
 public class GlobleExceptionHandler {
     private static Logger logger = LoggerFactory.getLogger(GlobleExceptionHandler.class);
-    
-	@ResponseBody
+
+    @ResponseBody
     @ExceptionHandler(Exception.class)
     public OutputVo defultExcepitonHandler(HttpServletRequest httpServletRequest, Exception ex) {
         ex.printStackTrace();
-        logger.info("GlobleExceptionHandler defultExcepitonHandler Exception:{} ",ex);
+        logger.info("GlobleExceptionHandler defultExcepitonHandler Exception:{} ", ex);
         if (ex instanceof BindException) {
             //处理返回的错误信息
             StringBuffer errorMsg = new StringBuffer();
@@ -49,7 +49,7 @@ public class GlobleExceptionHandler {
             }
             // return new BaseException(ErrorCode.ERROR_SIGN_NOT_NULL, "sign error not null");
             // return errorMsg.toString();
-           return new OutputVo<>(ErrorCode.ERROR_PARAMETER, "parameter error" + errorMsg.toString());
+            return new OutputVo<>(ErrorCode.ERROR_PARAMETER, "parameter error" + errorMsg.toString());
 
         }
 
@@ -68,7 +68,7 @@ public class GlobleExceptionHandler {
         StringBuilder builder = new StringBuilder();
 
         for (FieldError error : fieldErrors) {
-            builder.append( "   " + error.getDefaultMessage());
+            builder.append("   " + error.getDefaultMessage());
         }
         return new OutputVo<>(ErrorCode.ERROR_PARAMETER, "parameter error" + builder.toString());
     }
@@ -82,12 +82,25 @@ public class GlobleExceptionHandler {
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
         StringBuilder builder = new StringBuilder();
         for (ConstraintViolation<?> item : violations) {
-            builder.append( "   " + item.getMessage());
+            builder.append("   " + item.getMessage());
         }
 
-        return new OutputVo<>(ErrorCode.ERROR_PARAMETER,"parameter error" + builder.toString());
+        return new OutputVo<>(ErrorCode.ERROR_PARAMETER, "parameter error" + builder.toString());
     }
 
+    /**
+     * 处理自定义的业务异常
+     *
+     * @param req
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = BaseException.class)
+    @ResponseBody
+    public OutputVo bizExceptionHandler(HttpServletRequest req, BaseException e) {
+        logger.error("发生业务异常！原因是：{}", e.getMessage());
+        return new OutputVo<>(e.getCode(), e.getMessage());
+    }
 
 
 }
