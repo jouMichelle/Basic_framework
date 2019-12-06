@@ -32,6 +32,7 @@ public class Swagger2Config {
                 .forCodeGeneration(true) //
                 .apiInfo(apiInfo()) //
                 .pathMapping("/")// base，最终调用接口后会和paths拼接在一起
+                // .paths(Predicates.or(PathSelectors.regex("/api/.*")))//过滤的接口
                 .select() //
                 .apis(RequestHandlerSelectors.basePackage("ai.dongsheng.controller")) //
                 .paths(PathSelectors.any()) //

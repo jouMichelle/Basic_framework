@@ -62,7 +62,7 @@ public class CodeGenerator {
         gc.setDateType(DateType.ONLY_DATE);
         gc.setSwagger2(true);  //  实体属性 Swagger2 注解
         gc.setFileOverride(true); // 如果生成的不好，进行覆盖处理。
-        // gc.setActiveRecord(true);
+        // gc.setActiveRecord(true);    // 开启 activeRecord 模式
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// mapper.xml 是否生成 ResultMap，默认 false 不生成
         gc.setBaseColumnList(true);// mapper.xml 是否生成 ColumnList，默认 false 不生成
