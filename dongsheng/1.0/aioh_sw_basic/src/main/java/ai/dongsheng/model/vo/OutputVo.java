@@ -4,12 +4,21 @@ package ai.dongsheng.model.vo;
 import ai.dongsheng.common.ErrorCode;
 import ai.dongsheng.utils.GsonUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(value = "返回值")
 public class OutputVo<T> {
+
+    @ApiModelProperty(value = "请求ID", dataType = "String", hidden = true,example = "null")
     private String reqId;
+    @ApiModelProperty(value = "响应说明", dataType = "String",example = "SUCCESS")
     private String msg;
+    @ApiModelProperty(value = "响应状态码", dataType = "int",example = "200",required = true)
     private int code;
+    @ApiModelProperty(value = "响应时间戳", dataType = "int",example = "1568883765",required = true)
     private int time;
+    @ApiModelProperty(value = "响应业务数据", dataType = "JosnObject",example = "{}")
     private T data = null;
 
     public OutputVo() {
@@ -22,11 +31,11 @@ public class OutputVo<T> {
         this.setTime((int) (System.currentTimeMillis() / 1000));
     }
 
-    public OutputVo(String reqId) {
-        this(reqId, ErrorCode.OK, "SUCCESS");
-    }
+    // public OutputVo(String reqId) {
+    //     this(reqId, ErrorCode.OK, "SUCCESS");
+    // }
 
-    public OutputVo(String reqId,T data) {
+    public OutputVo(String reqId, T data) {
         this(reqId, ErrorCode.OK, "SUCCESS",data);
     }
     public OutputVo(String reqId, int code, String msg) {
@@ -46,7 +55,7 @@ public class OutputVo<T> {
         this.msg = msg;
         this.setTime((int) (System.currentTimeMillis() / 1000));
     }
-    public OutputVo(String reqId,int code, String msg, T data) {
+    public OutputVo(String reqId, int code, String msg, T data) {
         this.setReqId(reqId);
         this.data = data;
 
