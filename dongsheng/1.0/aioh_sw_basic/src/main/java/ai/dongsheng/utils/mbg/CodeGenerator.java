@@ -35,7 +35,8 @@ public class CodeGenerator {
     public static final String OUTPUTDIR = "/src/main/java";
     public static final String AUTHOR = "MichelleJou";
     // 数据库连接URL
-    public static final String DBURL = "jdbc:mysql://47.106.230.10/account?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Taipei";
+    public static final String DBURL = "jdbc:mysql://192.168.10.31/payment?characterEncoding=utf-8&useSSL=false" +
+            "&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Taipei&tinyInt1isBit=false";
     // 数据库驱动
     public static final String DBDRIVER = "com.mysql.cj.jdbc.Driver";
     // 数据库用户名
