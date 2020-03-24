@@ -1,5 +1,6 @@
 package ai.dongsheng.model.entity;
 
+import ai.dongsheng.utils.GsonUtil;
 import lombok.Data;
 
 import java.util.Date;
