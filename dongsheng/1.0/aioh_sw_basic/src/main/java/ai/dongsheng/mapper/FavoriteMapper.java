@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 用户收藏列表 Mapper 接口
  * </p>
  *
  * @author MichelleJou
- * @since 2019-11-27
+ * @since 2019-12-06
  */
 public interface FavoriteMapper extends BaseMapper<Favorite> {
 

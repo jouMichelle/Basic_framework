@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ai.dongsheng.mapper.PayOrdersMapper" >
+  <resultMap id="BaseResultMap" type="ai.dongsheng.model.entity.PayOrders" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="order_source" property="orderSource" jdbcType="VARCHAR" />
+    <result column="source_system" property="sourceSystem" jdbcType="TINYINT" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_description" property="goodsDescription" jdbcType="VARCHAR" />
+    <result column="order_price" property="orderPrice" jdbcType="INTEGER" />
+    <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR" />
+    <result column="pay_order_id" property="payOrderId" jdbcType="VARCHAR" />
+    <result column="pay_price" property="payPrice" jdbcType="INTEGER" />
+    <result column="currency" property="currency" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="third_party_order" property="thirdPartyOrder" jdbcType="VARCHAR" />
+    <result column="third party notification" property="thirdPartyNotification" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="TINYINT" />
+    <result column="pay_channel" property="payChannel" jdbcType="VARCHAR" />
+    <result column="notify_status" property="notifyStatus" jdbcType="TINYINT" />
+    <result column="notify_amount" property="notifyAmount" jdbcType="INTEGER" />
+    <result column="revision" property="revision" jdbcType="INTEGER" />
+    <result column="notify_times" property="notifyTimes" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

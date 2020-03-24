@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
+    <classPathEntry  location="C:\Maven\apache-maven-3.6.1-bin\apache-maven-3.6.1\2M\mysql\mysql-connector-java\5.1.47"/>
+
+    <context id="DB2Tables" targetRuntime="Mybatis3">
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库链接URL，用户名、密码 -->
+        <!-- nullCatalogMeansCurrent 在5.1.42中默认是true，而在6.0.6默认为false。-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.10.31/account"
+                        userId="root"
+                        password="zhijia2018">
+        </jdbcConnection>
+
+        <!-- 引入自定义类型转换的实现类 -->
+        <javaTypeResolver type="com.yangxin.demo.generator.MyJavaTypeResolver"></javaTypeResolver>
+
+        <!-- 设置Java类生成的位置 targetPackage:表示生成的路径，targetProject：表示生成的文件/项目下-->
+        <javaModelGenerator targetPackage="ai.dongsheng.model.entity" targetProject="src">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="false"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件xml存放位置;targetPackage:自己的包名;targetProject:该文件你想放位置（路径的不要有中文） -->
+        <sqlMapGenerator targetPackage="data.resources.mappers" targetProject="src">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="ai.dongsheng.mapper"
+                             targetProject="src">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+        <table tableName="device_playlist" domainObjectName="DevicePlaylist"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

@@ -6,14 +6,15 @@
     <resultMap id="BaseResultMap" type="ai.dongsheng.model.entity.Favorite">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
-        <result column="robot_id" property="robotId" />
+        <result column="device_id" property="deviceId" />
         <result column="channel_id" property="channelId" />
         <result column="order_num" property="orderNum" />
         <result column="album_id" property="albumId" />
         <result column="category_id" property="categoryId" />
+        <result column="album_type" property="albumType" />
+        <result column="album_name" property="albumName" />
         <result column="res_id" property="resId" />
         <result column="res_type" property="resType" />
-        <result column="album_name" property="albumName" />
         <result column="res_name" property="resName" />
         <result column="deleted" property="deleted" />
         <result column="update_time" property="updateTime" />
@@ -22,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, robot_id, channel_id, order_num, album_id, category_id, res_id, res_type, album_name, res_name, deleted, update_time, create_time
+        id, user_id, device_id, channel_id, order_num, album_id, category_id, album_type, album_name, res_id, res_type, res_name, deleted, update_time, create_time
     </sql>
 
 </mapper>

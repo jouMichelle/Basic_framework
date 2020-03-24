@@ -35,7 +35,8 @@ public class CodeGenerator {
     public static final String OUTPUTDIR = "/src/main/java";
     public static final String AUTHOR = "MichelleJou";
     // 数据库连接URL
-    public static final String DBURL = "jdbc:mysql://47.106.230.10/account?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Taipei";
+    public static final String DBURL = "jdbc:mysql://192.168.10.31/payment?characterEncoding=utf-8&useSSL=false" +
+            "&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Taipei&tinyInt1isBit=false";
     // 数据库驱动
     public static final String DBDRIVER = "com.mysql.cj.jdbc.Driver";
     // 数据库用户名
@@ -60,16 +61,16 @@ public class CodeGenerator {
         gc.setFileOverride(false);
         // 日期类型的字段使用哪个类型，默认是 java8的 日期类型，此处改为 java.util.date
         gc.setDateType(DateType.ONLY_DATE);
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
+        gc.setSwagger2(true);  //  实体属性 Swagger2 注解
         gc.setFileOverride(true); // 如果生成的不好，进行覆盖处理。
-        // gc.setActiveRecord(true);
+        // gc.setActiveRecord(true);    // 开启 activeRecord 模式
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// mapper.xml 是否生成 ResultMap，默认 false 不生成
         gc.setBaseColumnList(true);// mapper.xml 是否生成 ColumnList，默认 false 不生成
         //自定义文件名
         gc.setMapperName("%sMapper");
-        gc.setServiceName("%sService");
-        gc.setServiceImplName("%sServiceImpl");
+        gc.setServiceName("%sDao");
+        gc.setServiceImplName("%sDaoImpl");
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
