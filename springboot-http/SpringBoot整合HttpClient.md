@@ -508,10 +508,10 @@ public class TestController {
 
 ### 4、项目目录结构
 
-![Alt text](图片/1586402565927.png)
+![Alt text](https://github.com/jouMichelle/Basic_framework/blob/master/springboot-http/%E5%9B%BE%E7%89%87/1586402565927.png)
 
 
 ### 5、测试
-![Alt text](图片/1586402583096.png)
+![Alt text](https://github.com/jouMichelle/Basic_framework/blob/master/springboot-http/%E5%9B%BE%E7%89%87/1586402583096.png)
 
 
