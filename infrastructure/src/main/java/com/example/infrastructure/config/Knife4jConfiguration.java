@@ -1,24 +1,24 @@
 package com.example.infrastructure.config;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 /**
- * @Description: 在线文档生成配置
- * @Author anyon
- * @Date 2021/5/19 16:45
- */
+ * @program: demo
+ * @description:
+ * @author:
+ * @create: 2021-05-19 22:03
+ **/
 @Configuration
 @EnableSwagger2WebMvc
 public class Knife4jConfiguration {
+    // 在线文档地址为: http://host:port/doc.html
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
         Docket docket=new Docket(DocumentationType.SWAGGER_2)
@@ -38,6 +38,4 @@ public class Knife4jConfiguration {
                 .build();
         return docket;
     }
-
-
-} 
+}
