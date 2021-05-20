@@ -1,5 +1,6 @@
 package com.example.infrastructure;
 
+import cn.dev33.satoken.SaManager;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,7 @@ public class InfrastructureApplication  implements WebMvcConfigurer {
                 env.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));
+        System.out.println("启动成功：sa-token配置如下：" + SaManager.getConfig());
     }
 
 }

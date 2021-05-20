@@ -1,11 +1,13 @@
 package com.example.infrastructure.config;
 
+import cn.dev33.satoken.interceptor.SaAnnotationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.nio.charset.Charset;
@@ -39,6 +41,11 @@ public class CustomMVCConfiguration  extends WebMvcConfigurerAdapter {
     //     configurer.favorPathExtension(false);
     // }
 
+    // 注册sa-token的注解拦截器，打开注解式鉴权功能
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SaAnnotationInterceptor()).addPathPatterns("/**");
+    }
 
     public HttpMessageConverter<String> responseBodyConverter() {
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));

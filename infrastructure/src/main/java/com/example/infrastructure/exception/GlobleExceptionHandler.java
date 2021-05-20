@@ -1,6 +1,7 @@
 package com.example.infrastructure.exception;
 
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.example.infrastructure.constant.AudioConst;
 import com.example.infrastructure.enums.RespStatusEnums;
 import com.example.infrastructure.model.vo.OutputVO;
@@ -55,6 +56,21 @@ public class GlobleExceptionHandler {
                     RespStatusEnums.PARAMETER_ERROR.getMessage() + "," + errorMsg.toString(), AudioConst.error_1);
         }
         return new OutputVO<>(RespStatusEnums.UNKNOWN_ERROR.getCode(), RespStatusEnums.UNKNOWN_ERROR.getMessage(), AudioConst.error_1);
+
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(NotLoginException.class)
+    public OutputVO NotLoginException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+        ex.printStackTrace();
+        logger.error("Request Exception Path:{}",request.getRequestURL());
+        logger.error("GlobleExceptionHandler NotLoginException Exception:{}", ex.getMessage());
+        //处理返回的错误信息
+        return new OutputVO<>(RespStatusEnums.UNKNOWN_ERROR.getCode(), ex.getMessage(), AudioConst.error_1);
 
     }
 

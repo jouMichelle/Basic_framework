@@ -1,6 +1,7 @@
 package com.example.infrastructure.cache;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,7 +14,7 @@ import org.springframework.util.StringUtils;
  **/
 @Component
 public class RedisLock {
-//    @Autowired
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     /**

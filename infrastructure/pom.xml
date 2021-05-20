@@ -90,12 +90,35 @@
             <version>2.10.5</version>
         </dependency>
 
-        <!--在线文档  swagger-->
+        <!--在线文档  swagger 文档地址：https://doc.xiaominfo.com/-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>2.0.7</version>
+            <version>2.0.8</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-springdoc-ui</artifactId>-->
+<!--            &lt;!&ndash;在引用时请在maven中央仓库搜索3.X最新版本号&ndash;&gt;-->
+<!--            <version>2.0.8</version>-->
+<!--        </dependency>-->
+
+        <!-- Sa-Token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.19.0</version>
+        </dependency>
+
+        <!-- Sa-Token整合redis (使用jdk默认序列化方式) -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-dao-redis</artifactId>
+            <version>1.19.0</version>
+        </dependency>
+
+
         <!--   开源工具库:https://hutool.cn/     -->
         <dependency>
             <groupId>cn.hutool</groupId>
