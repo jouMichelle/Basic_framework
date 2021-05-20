@@ -42,7 +42,7 @@ public class GlobleExceptionHandler {
         response.setHeader("Cache-Control", "no-cache, must-revalidate");
         ex.printStackTrace();
 
-        logger.error("GlobleExceptionHandler defultExcepitonHandler Exception:{}", ex);
+        logger.error("GlobleExceptionHandler defultExcepitonHandler Exception:{}", ex.getMessage());
         //处理返回的错误信息
         StringBuffer errorMsg = new StringBuffer();
         // 参数校验失败
@@ -59,7 +59,13 @@ public class GlobleExceptionHandler {
 
     }
 
-
+    /**
+     *  拦截 sa-token 校验异常
+     * @param request
+     * @param response
+     * @param ex
+     * @return
+     */
     @ResponseBody
     @ExceptionHandler(NotLoginException.class)
     public OutputVO NotLoginException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
@@ -76,6 +82,10 @@ public class GlobleExceptionHandler {
 
     /**
      * 处理实体字段校验不通过异常
+     * @param request
+     * @param response
+     * @param ex
+     * @return
      */
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseBody

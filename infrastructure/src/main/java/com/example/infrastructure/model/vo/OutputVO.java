@@ -4,21 +4,22 @@ package com.example.infrastructure.model.vo;
 import com.example.infrastructure.enums.RespStatusEnums;
 import com.example.infrastructure.model.json.GsonUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 
-
-//@ApiModel(value = "返回值")
+@ApiModel(value = "返回值")
 public class OutputVO<T> {
 
-//    @ApiModelProperty(value = "请求ID", dataType = "String", hidden = true)
+    @ApiModelProperty(value = "请求ID", dataType = "String", hidden = true)
     private String reqId;
-//    @ApiModelProperty(value = "响应说明", dataType = "String",example = "SUCCESS")
+    @ApiModelProperty(value = "响应说明", dataType = "String",example = "SUCCESS")
     private String msg;
-//    @ApiModelProperty(value = "响应状态码", dataType = "int",example = "200",required = true)
+    @ApiModelProperty(value = "响应状态码", dataType = "int",example = "200",required = true)
     private Integer code;
-//    @ApiModelProperty(value = "响应时间戳", dataType = "int",example = "1568883765",required = true)
+    @ApiModelProperty(value = "响应时间戳", dataType = "int",example = "1568883765",required = true)
     private Integer time;
-//    @ApiModelProperty(value = "响应业务数据", dataType = "JosnObject",example = "{}")
+    @ApiModelProperty(value = "响应业务数据", dataType = "JosnObject",example = "{}")
     private T data;
 
 
