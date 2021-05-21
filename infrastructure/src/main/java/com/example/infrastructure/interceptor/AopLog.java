@@ -11,8 +11,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -32,8 +30,8 @@ import java.util.Objects;
 public class AopLog {
     private static final String START_TIME = "request-start";
 
-    @Resource
-    private AuthorizationProvider authorizationProvider;
+//    @Resource
+//    private AuthorizationProvider authorizationProvider;
 
     /**
      * 切入点,以 controller 包下定义的所有请求为切入点
@@ -57,10 +55,10 @@ public class AopLog {
         log.info("【请求 URL】：{}", request.getRequestURL());
         log.info("【请求 IP】：{}", request.getRemoteAddr());
         log.info("【请求类名】：{}，【请求方法名】：{}", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
-        String sn = request.getHeader("sn");
-        String imei = request.getHeader("imei");
-        String pattern = request.getHeader("pattern");
-        log.info("【请求头 sn】:{} ,【请求头 pattern】:{},【请求头 imei】:{}",sn,pattern,imei);
+//        String sn = request.getHeader("sn");
+//        String imei = request.getHeader("imei");
+//        String pattern = request.getHeader("pattern");
+//        log.info("【请求头 sn】:{} ,【请求头 pattern】:{},【请求头 imei】:{}",sn,pattern,imei);
         Map<String, Object> parameterMap = RequestParamsToMap.getParameterMap(request);
         String s = JSONUtil.toJsonStr(parameterMap);
         log.info("【请求参数】：{}，", s);
