@@ -1,5 +1,7 @@
 package com.example.infrastructure.exception;
 
+import java.net.SocketException;
+
 /**
  * @program: aiui
  * @description: 自定义异常类
@@ -42,6 +44,12 @@ public class BaseException extends RuntimeException {
         this.code = code;
         this.url = url;
     }
+
+    public BaseException(String s) {
+        this.url =s;
+    }
+
+
 
     public String getUrl() {
         return url;
