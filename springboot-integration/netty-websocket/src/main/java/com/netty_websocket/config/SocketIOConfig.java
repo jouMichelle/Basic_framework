@@ -1,8 +1,11 @@
 package com.netty_websocket.config;
 
+import com.corundumstudio.socketio.AuthorizationListener;
+import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketConfig;
 import com.corundumstudio.socketio.SocketIOServer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @author:
  * @create: 2021-06-28 19:17
  **/
+@Slf4j
 @Configuration
 public class SocketIOConfig {
     @Value("${socketio.host}")
@@ -48,6 +52,18 @@ public class SocketIOConfig {
         configuration.setUpgradeTimeout(upgradeTimeout);
         configuration.setPingTimeout(pingTimeout);
         configuration.setPingInterval(pingInterval);
+        // 鉴权管理
+        configuration.setAuthorizationListener(new AuthorizationListener() {
+            @Override
+            public boolean isAuthorized(HandshakeData data) {
+                // 可以使用如下代码获取用户密码信息
+                String sn = data.getSingleUrlParam("sn");
+                log.info("sn:{}", sn);
+
+                // 如果认证不通过会返回一个Socket.EVENT_CONNECT_ERROR事件
+                return true;
+            }
+        });
         return new SocketIOServer(configuration);
     }
 }
