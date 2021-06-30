@@ -93,7 +93,11 @@ public class NettyServer {
         2、浏览器请求时 ws://localhost:58080/xxx 表示请求的uri
         3、核心功能是将http协议升级为ws协议，保持长连接
         */
-                ch.pipeline().addLast(new WebSocketServerProtocolHandler(webSocketPath, WEBSOCKET_PROTOCOL, true, 65536 * 10));
+         //ch.pipeline().addLast(new WebSocketServerProtocolHandler(webSocketPath, WEBSOCKET_PROTOCOL, true, 65536 * 10));
+         //       // 自定义的handler，处理业务逻辑
+         //       ch.pipeline().addLast(webSocketHandler);
+
+                ch.pipeline().addLast(new WebSocketServerProtocolHandler("", WEBSOCKET_PROTOCOL, true, 65536 * 10));
                 // 自定义的handler，处理业务逻辑
                 ch.pipeline().addLast(webSocketHandler);
 
