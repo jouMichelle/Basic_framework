@@ -1,118 +1,92 @@
 package com.netty.netty_socektio.config;
 
 import com.corundumstudio.socketio.AuthorizationListener;
-import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketConfig;
 import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
+import com.netty.netty_socektio.auth.SocketAuthListener;
+import com.netty.netty_socektio.handler.NettySocketHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @description: socketio配置类
+ * @description:
  * @author:
- * @create: 2021-06-30 11:09
+ * @create: 2021-06-28 19:17
  **/
 @Slf4j
 @Configuration
 public class SocketIOConfig {
 
-    /**
-     * host 地址
-     */
     @Value("${socketio.host}")
     private String host;
-    /**
-     * 监听端口
-     */
     @Value("${socketio.port}")
     private Integer port;
-    /**
-     * socket连接数大小（如只监听一个端口boss线程组为1即可）
-     */
     @Value("${socketio.bossCount}")
     private int bossCount;
-    /**
-     * 连接数大小
-     */
     @Value("${socketio.workCount}")
     private int workCount;
-    /**
-     * 允许客户请求
-     */
     @Value("${socketio.allowCustomRequests}")
     private boolean allowCustomRequests;
-    /**
-     * 协议升级超时时间（毫秒），默认10秒。HTTP握手升级为ws协议超时时间
-     */
     @Value("${socketio.upgradeTimeout}")
     private int upgradeTimeout;
-    /**
-     * Ping消息超时时间（毫秒），默认60秒，这个时间间隔内没有接收到心跳消息就会发送超时事件
-     */
     @Value("${socketio.pingTimeout}")
     private int pingTimeout;
-    /**
-     * Ping消息间隔（毫秒），默认25秒。客户端向服务器发送一条心跳消息间隔
-     */
     @Value("${socketio.pingInterval}")
     private int pingInterval;
-    /**
-     * 设置最大每帧处理数据的长度，防止他人利用大数据来攻击服务器
-     */
-    @Value("${socketio.maxFramePayloadLength}")
-    private int maxFramePayloadLength;
-    /**
-     * 设置http交互最大内容长度
-     */
-    @Value("${socketio.maxHttpContentLength}")
-    private int maxHttpContentLength;
 
+    // 设置 socket 服务器的属性
     @Bean
     public SocketIOServer socketIOServer() {
-        com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
-
-        // 配置端口
-        config.setPort(port);
-        // 开启Socket端口复用
         SocketConfig socketConfig = new SocketConfig();
+        // 关闭nagle算法，默认false
+        socketConfig.setTcpNoDelay(true);
+        //在默认情况下,当调用close关闭socke的使用,close会立即返回,
+        // 但是,如果send buffer中还有数据,系统会试着先把send buffer中的数据发送出去,然后close才返回.
         socketConfig.setSoLinger(0);
-        socketConfig.setReuseAddress(true);
-        config.setSocketConfig(socketConfig);
-        // 连接数大小
-        config.setWorkerThreads(workCount);
-        // 允许客户请求
-        config.setAllowCustomRequests(allowCustomRequests);
-        // 协议升级超时时间(毫秒)，默认10秒，HTTP握手升级为ws协议超时时间
-        config.setUpgradeTimeout(upgradeTimeout);
-        // Ping消息超时时间(毫秒)，默认60秒，这个时间间隔内没有接收到心跳消息就会发送超时事件
-        config.setPingTimeout(pingTimeout);
-        // Ping消息间隔(毫秒)，默认25秒。客户端向服务器发送一条心跳消息间隔
-        config.setPingInterval(pingInterval);
-        // 设置HTTP交互最大内容长度
-        config.setMaxHttpContentLength(maxHttpContentLength);
-        // 设置最大每帧处理数据的长度，防止他人利用大数据来攻击服务器
-        config.setMaxFramePayloadLength(maxFramePayloadLength);
-        // 设置是否可以跨域访问
-        config.setOrigin("*");
-        // 鉴权管理
-        config.setAuthorizationListener(new AuthorizationListener() {
-            @Override
-            public boolean isAuthorized(HandshakeData data) {
-                // 可以使用如下代码获取用户密码信息
-                String sn = data.getSingleUrlParam("sn");
-                log.info("sn:{}", sn);
-
-                // 如果认证不通过会返回一个Socket.EVENT_CONNECT_ERROR事件
-                return false;
-            }
-        });
-        SocketIOServer socketIOServer = new SocketIOServer(config);
-        //socketIOServer.addListeners(eventListenner);
-        //socketIOServer.start();
-        return socketIOServer;
+        com.corundumstudio.socketio.Configuration configuration = new com.corundumstudio.socketio.Configuration();
+        configuration.setSocketConfig(socketConfig);
+        // 设置主机名，默认是0.0.0.0
+        configuration.setHostname(host);
+        // 设置监听端口
+        configuration.setPort(port);
+        configuration.setBossThreads(bossCount);
+        configuration.setWorkerThreads(workCount);
+        configuration.setAllowCustomRequests(allowCustomRequests);
+        // 协议升级超时时间（毫秒），默认10000。HTTP握手升级为ws协议超时时间
+        configuration.setUpgradeTimeout(upgradeTimeout);
+        // Ping消息超时时间（毫秒），默认60000，这个时间间隔内没有接收到心跳消息就会发送超时事件
+        configuration.setPingTimeout(pingTimeout);
+        // Ping消息间隔（毫秒），默认25000。客户端向服务器发送一条心跳消息间隔
+        configuration.setPingInterval(pingInterval);
+        //初始化认证监听器
+        AuthorizationListener SocketAuthListener = new SocketAuthListener();
+        //设置认证监听器
+        configuration.setAuthorizationListener(SocketAuthListener);
+        SocketIOServer server = new SocketIOServer(configuration);
+        //启动socket服务
+        server.start();
+        return server;
 
     }
+    /**
+     *用于扫描netty-socketio的注解，比如 @OnConnect、@OnEvent
+     *
+     **/
+    @Bean
+    public SpringAnnotationScanner springAnnotationScanner() {
+        return new SpringAnnotationScanner(socketIOServer());
+    }
+
+    /**
+     * 注入socket处理拦截器
+     * @return
+     */
+    @Bean
+    public NettySocketHandler nettySocketHandler(){
+       return new NettySocketHandler();
+    }
+
 }

@@ -1,42 +1,46 @@
-package com.netty.netty_socektio.service.impl;
+package com.springboot.nettysoketio0.netty_soketio0.service.impl;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.netty.netty_socektio.service.ISocketIOService;
-import lombok.extern.slf4j.Slf4j;
+import com.springboot.nettysoketio0.netty_soketio0.service.ISocketIOService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * @program: netty_soketio0
  * @description:
  * @author:
- * @create: 2021-06-30 14:59
+ * @create: 2021-07-03 00:24
  **/
-@Slf4j
-@Service(value = "socketIOService")
+@Service
 public class ISocketIOServiceImpl implements ISocketIOService {
     /**
      * 存放已连接的客户端
      */
     private static Map<String, SocketIOClient> clientMap = new ConcurrentHashMap<>();
-
     /**
-     * 自定义事件`push_data_event`,用于服务端与客户端通信
+     * 自定义事件，用于服务端与客户端的通信
      */
     private static final String PUSH_DATA_EVENT = "push_data_event";
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
-    private SocketIOServer socketIOServer;
+    SocketIOServer socketIOServer;
+
 
     /**
-     * Spring IoC容器创建之后，在加载SocketIOServiceImpl Bean之后启动
+     * Spring IOC 容器启动之后，在加载 SocketIOServiceImpl 之后启动
      */
     @PostConstruct
     private void autoStartup() {
@@ -44,62 +48,69 @@ public class ISocketIOServiceImpl implements ISocketIOService {
     }
 
     /**
-     * Spring IoC容器在销毁SocketIOServiceImpl Bean之前关闭,避免重启项目服务端口占用问题
+     * 在加载 SocketIOServiceImpl 销毁之前关闭，避免重复启动服务端
      */
     @PreDestroy
     private void autoStop() {
         stop();
     }
 
+
+    /**
+     * 启动服务
+     */
     @Override
     public void start() {
-        // 监听客户端连接
+// 监听客户端连接
         socketIOServer.addConnectListener(client -> {
-            log.debug("************ 客户端： " + getIpByClient(client) + " 已连接 ************");
-            // 自定义事件`connected` -> 与客户端通信  （也可以使用内置事件，如：Socket.EVENT_CONNECT）
-            client.sendEvent("connected", "你成功连接上了哦...");
-            String userId = getParamsByClient(client);
+            logger.info("**********客户端：" + getIpByClient(client) + "已连接**********");
+            client.sendEvent("connection", "你成功的连接上了服务器哦。。。");
+            String userId = getParamByClient(client);
             if (userId != null) {
                 clientMap.put(userId, client);
             }
         });
 
-        // 监听客户端断开连接
+        // 监听客户断开连接
         socketIOServer.addDisconnectListener(client -> {
             String clientIp = getIpByClient(client);
-            log.debug(clientIp + " *********************** " + "客户端已断开连接");
-            String userId = getParamsByClient(client);
+            logger.info("**********客户端：" + clientIp + "已断开连接**********");
+            String userId = getParamByClient(client);
             if (userId != null) {
                 clientMap.remove(userId);
                 client.disconnect();
             }
         });
 
-        // 自定义事件`client_info_event` -> 监听客户端消息
+        // 自定义 client_info_event,监听客户端消息
         socketIOServer.addEventListener(PUSH_DATA_EVENT, String.class, (client, data, ackSender) -> {
             // 客户端推送`client_info_event`事件时，onData接受数据，这里是string类型的json数据，还可以为Byte[],object其他类型
             String clientIp = getIpByClient(client);
-            log.debug(clientIp + " ************ 客户端：" + data);
+            logger.info("**********客户端数据：" + data);
         });
 
         // 启动服务
         socketIOServer.start();
+        logger.info("socketHandler start-------------------------------");
 
         // broadcast: 默认是向所有的socket连接进行广播，但是不包括发送者自身，如果自己也打算接收消息的话，需要给自己单独发送。
-        // new Thread(() -> {
-        //     int i = 0;
-        //     while (true) {
-        //         try {
-        //             // 每3秒发送一次广播消息
-        //             Thread.sleep(3000);
-        //             socketIOServer.getBroadcastOperations().sendEvent("myBroadcast", "广播消息 " + DateUtil.now());
-        //         } catch (InterruptedException e) {
-        //             e.printStackTrace();
-        //         }
-        //     }
-        // }).start();
+        new Thread(() -> {
+            int i = 0;
+            while (true) {
+                try {
+                    // 每隔50秒发送一次广播消息
+                    Thread.sleep(50000);
+                    socketIOServer.getBroadcastOperations().sendEvent("myBroadcast", "广播消息" + new Date());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
+    /**
+     * 停止服务
+     */
     @Override
     public void stop() {
         if (socketIOServer != null) {
@@ -108,22 +119,33 @@ public class ISocketIOServiceImpl implements ISocketIOService {
         }
     }
 
+    /**
+     * 推送消息給指定用户
+     *
+     * @param userId     客户端唯一标识
+     * @param msgContent 消息内容
+     */
     @Override
     public void pushMessageToUser(String userId, String msgContent) {
         SocketIOClient client = clientMap.get(userId);
+        System.out.println(client);
         if (client != null) {
             client.sendEvent(PUSH_DATA_EVENT, msgContent);
         }
     }
 
     /**
-     * 获取客户端url中的userId参数（这里根据个人需求和客户端对应修改即可）
-     *
-     * @param client: 客户端
-     * @return: java.lang.String
+     * 从客户端对象拿到客户端的ip
+     * @param client 客户端对象
+     * @return ip
      */
-    private String getParamsByClient(SocketIOClient client) {
-        // 获取客户端url参数（这里的userId是唯一标识）
+    private String getIpByClient(SocketIOClient client) {
+        String sa = client.getRemoteAddress().toString();
+        return sa.substring(1, sa.indexOf(":"));
+    }
+
+    private String getParamByClient(SocketIOClient client) {
+        // 获取客户端 url 参数（这里的 userId 是唯一标识）
         Map<String, List<String>> params = client.getHandshakeData().getUrlParams();
         List<String> userIdList = params.get("userId");
         if (!CollectionUtils.isEmpty(userIdList)) {
@@ -132,15 +154,5 @@ public class ISocketIOServiceImpl implements ISocketIOService {
         return null;
     }
 
-    /**
-     * 获取连接的客户端ip地址
-     *
-     * @param client: 客户端
-     * @return: java.lang.String
-     */
-    private String getIpByClient(SocketIOClient client) {
-        String sa = client.getRemoteAddress().toString();
-        String clientIp = sa.substring(1, sa.indexOf(":"));
-        return clientIp;
-    }
+
 }

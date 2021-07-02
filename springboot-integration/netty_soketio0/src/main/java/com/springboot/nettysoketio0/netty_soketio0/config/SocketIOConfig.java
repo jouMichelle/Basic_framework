@@ -1,24 +1,20 @@
-package com.netty_websocket.config;
+package com.springboot.nettysoketio0.netty_soketio0.config;
 
-import com.corundumstudio.socketio.AuthorizationListener;
-import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketConfig;
 import com.corundumstudio.socketio.SocketIOServer;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+/**
 
 /**
+ * @program: netty_soketio0
  * @description:
  * @author:
- * @create: 2021-06-28 19:17
+ * @create: 2021-07-03 00:22
  **/
-@Slf4j
 @Configuration
 public class SocketIOConfig {
-
     @Value("${socketio.host}")
     private String host;
     @Value("${socketio.port}")
@@ -40,8 +36,7 @@ public class SocketIOConfig {
     @Bean
     public SocketIOServer socketIOServer() {
         SocketConfig socketConfig = new SocketConfig();
-        // 关闭nagle算法，默认false
-        socketConfig.setTcpNoDelay(true);
+        socketConfig.setTcpNoDelay(true); // 关闭nagle算法，默认false
         socketConfig.setSoLinger(0);
         com.corundumstudio.socketio.Configuration configuration = new com.corundumstudio.socketio.Configuration();
         configuration.setSocketConfig(socketConfig);
@@ -53,18 +48,8 @@ public class SocketIOConfig {
         configuration.setUpgradeTimeout(upgradeTimeout);
         configuration.setPingTimeout(pingTimeout);
         configuration.setPingInterval(pingInterval);
-        // 鉴权管理
-        configuration.setAuthorizationListener(new AuthorizationListener() {
-            @Override
-            public boolean isAuthorized(HandshakeData data) {
-                // 可以使用如下代码获取用户密码信息
-                String sn = data.getSingleUrlParam("sn");
-                log.info("sn:{}", sn);
-
-                // 如果认证不通过会返回一个Socket.EVENT_CONNECT_ERROR事件
-                return true;
-            }
-        });
         return new SocketIOServer(configuration);
     }
+
+
 }
